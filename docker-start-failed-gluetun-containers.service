@@ -1,0 +1,15 @@
+[Unit]
+Description=Start docker container with status "exited" after boot
+After=docker.service
+Wants=docker.service
+
+[Service]
+Type=oneshot
+
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+ExecStart=sleep 30
+ExecStart=/usr/local/bin/docker-start-failed-gluetun-containers.sh
+
+[Install]
+WantedBy=docker.service
