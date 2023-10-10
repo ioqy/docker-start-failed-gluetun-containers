@@ -29,7 +29,7 @@ RestrictSUIDSGID=yes
 ExecSearchPath=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 ExecStart=sleep 30
-ExecStart=docker-start-failed-gluetun-containers.sh
+ExecStart=bash -c 'docker ps --all --format '\''{{ .Names }}'\'' --filter '\''status=exited'\'' | xargs --no-run-if-empty --max-lines=1 bash -c '\''docker inspect $0 | (grep --quiet "cannot join network of a non running container" && docker start $0)'\'''
 
 [Install]
 WantedBy=docker.service
