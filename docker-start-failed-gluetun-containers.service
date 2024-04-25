@@ -1,5 +1,5 @@
 [Unit]
-Description=Start docker container with status "exited" after boot
+Description=Start docker container with status "exited" after docker daemon start
 After=docker.service
 Wants=docker.service
 
@@ -29,7 +29,7 @@ RestrictSUIDSGID=yes
 ExecSearchPath=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 ExecStart=sleep 30
-ExecStart=bash -c 'docker ps --all --format '\''{{ .Names }}'\'' --filter '\''status=exited'\'' | xargs --no-run-if-empty --max-lines=1 bash -c '\''docker inspect $0 | (grep --quiet "cannot join network of a non running container" && docker start $0)'\'''
+ExecStart=bash -c 'docker ps --all --format '\''{{ .Names }}'\'' --filter '\''status=exited'\'' | xargs --no-run-if-empty --max-lines=1 bash -c '\''docker inspect $0 | (grep --quiet "cannot join network of a non running container" && docker start $0 || true)'\'''
 
 [Install]
 WantedBy=docker.service
